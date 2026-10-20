@@ -1,19 +1,17 @@
-from mcp.server.lowlevel import Server
+import os
+import subprocess
+from typing import Annotated
+
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
+from mcp.shared.exceptions import McpError
 from mcp.types import (
+    INVALID_PARAMS,
     ErrorData,
     TextContent,
     Tool,
-    Annotations,
-    Field,
-    Annotated,
-    INVALID_PARAMS,
 )
-from pydantic import BaseModel
-import subprocess
-import os, json
-from mcp.shared.exceptions import McpError
+from pydantic import BaseModel, Field
 
 
 class Folder(BaseModel):
@@ -58,7 +56,7 @@ async def call_tool(name, arguments: dict) -> list[TextContent]:
     else:
         command = [os.path.join(script_dir, "instrumentedTest.sh"), args.folder]
 
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    result = subprocess.run(command, capture_output=True, check=False)
     stdout_lines = result.stdout.decode("utf-8").splitlines()
     stderr_lines = result.stderr.decode("utf-8").splitlines()
     all_lines = stdout_lines + stderr_lines

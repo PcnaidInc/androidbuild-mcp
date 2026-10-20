@@ -66,6 +66,10 @@ Add to your Claude settings:
 </details>
 
 
+## CI
+
+A CI workflow (`.github/workflows/ci.yml`) runs on every pull request and on pushes to `main`. It checks lint (`ruff check .`), type correctness (`pyright`), and that the package builds (`uv build`). The concurrency group cancels superseded runs.
+
 ## License
 
 mcpandroidbuild MCP tool is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
